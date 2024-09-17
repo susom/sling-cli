@@ -339,6 +339,12 @@ func (t *TaskExecution) runFileToDB() (err error) {
 		return
 	}
 
+	srcConn, err := t.getSrcDBConn(t.Context.Ctx)
+	if err != nil {
+		err = g.Error(err, "Could not initialize source connection")
+		return
+	}
+
 	t.SetProgress("connecting to target database (%s)", tgtConn.GetType())
 	err = tgtConn.Connect()
 	if err != nil {
@@ -370,8 +376,8 @@ func (t *TaskExecution) runFileToDB() (err error) {
 			"timestamp_layout":     "2006-01-02 15:04:05.000 -07",
 			"timestamp_layout_str": "{value}",
 		}
-
-		if err = getIncrementalValue(t.Config, tgtConn, varMap); err != nil {
+		t.Config.IncrementalVal, err = getIncrementalValue(t.Config, tgtConn, srcConn, varMap)
+		if err = getIncrementalValue(t.Config, tgtConn, srcConn, varMap); err != nil {
 			err = g.Error(err, "Could not get incremental value")
 			return err
 		}
@@ -520,7 +526,8 @@ func (t *TaskExecution) runDbToDb() (err error) {
 	// get watermark
 	if t.usingCheckpoint() {
 		t.SetProgress("getting checkpoint value")
-		if err = getIncrementalValue(t.Config, tgtConn, srcConn.Template().Variable); err != nil {
+		t.Config.IncrementalVal, err = getIncrementalValue(t.Config, tgtConn, srcConn, srcConn.Template().Variable)
+		if err != nil {
 			err = g.Error(err, "Could not get incremental value")
 			return err
 		}
