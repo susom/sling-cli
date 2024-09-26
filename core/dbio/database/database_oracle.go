@@ -388,7 +388,7 @@ func (conn *OracleConn) getColumnsString(ds *iop.Datastream) string {
 			)
 		} else if col.Type == iop.TimestampType {
 			expr = fmt.Sprintf(
-				`"TO_TIMESTAMP(:%s, 'YYYY-MM-DD HH24:MI:SS.FF6')"`,
+				`"TO_DATE(:%s, 'YYYY-MM-DD HH24:MI:SS')"`,
 				strings.ToUpper(col.Name),
 			)
 		} else if col.Type == iop.TimestampzType {
@@ -409,7 +409,7 @@ func (conn *OracleConn) getColumnsString(ds *iop.Datastream) string {
 func sqlLoadCsvReader(ds *iop.Datastream) (*io.PipeReader, *struct{ cols map[int]int }) {
 	pu := &struct{ cols map[int]int }{map[int]int{}}
 	pipeR, pipeW := io.Pipe()
-
+        g.Debug("I am in sqlLoadCsvReader in database_oracle.go")
 	go func() {
 		c := uint64(0) // local counter
 		w := csv.NewWriter(pipeW)

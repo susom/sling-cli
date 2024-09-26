@@ -70,7 +70,7 @@ bigquery	string	text	col_string string	TRUE	TRUE
 bigquery	json	json		FALSE	FALSE	
 bigquery	struct	json		FALSE	FALSE	
 bigquery	time	time	col_time time	FALSE	FALSE	
-bigquery	timestamp	timestamp	col_timestamp timestamp	TRUE	TRUE	
+bigquery	timestamp	datetime	col_datetime datetime	TRUE	TRUE	
 clickhouse	array	json	col_array array	FALSE	FALSE	
 clickhouse	uuid	string	col_uuid array	FALSE	FALSE	
 clickhouse	date	date	col_date date	TRUE	TRUE	
@@ -250,7 +250,7 @@ oracle	number	decimal	col_number number	TRUE	TRUE	Variable-length numeric data. 
 oracle	nvarchar2	string	col_nvarchar2 nvarchar2(100)	TRUE	TRUE	Variable-length character data of length size characters or bytes, depending on national character set. A maximum size must be specified.
 oracle	raw	binary	col_raw raw(100)	TRUE	FALSE	Variable-length raw binary data.
 oracle	rowid	bigint	col_rowid rowid	FALSE	FALSE	Binary data representing row addresses.
-oracle	timestamp	timestamp	col_ timestamp timestamp	TRUE	TRUE	
+oracle	timestamp	datetime	col_datetime datetime	TRUE	TRUE	
 oracle	timestampdty	timestamp	" "	FALSE	FALSE	
 oracle	timestamptz	timestampz	" "	FALSE	FALSE	
 oracle	timestamptz_dty	timestampz	" "	FALSE	FALSE	

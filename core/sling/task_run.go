@@ -367,7 +367,7 @@ func (t *TaskExecution) runFileToDB() (err error) {
 		varMap := map[string]string{
 			"date_layout":          "2006-01-02",
 			"date_layout_str":      "{value}",
-			"timestamp_layout":     "2006-01-02 15:04:05.000 -07",
+			"timestamp_layout":     "2006-01-02 15:04:05",
 			"timestamp_layout_str": "{value}",
 		}
 

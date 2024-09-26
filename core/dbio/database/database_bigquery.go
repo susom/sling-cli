@@ -490,7 +490,7 @@ func getBqSchema(columns iop.Columns) (schema bigquery.Schema) {
 		iop.BoolType:       bigquery.BooleanFieldType,
 		iop.BinaryType:     bigquery.BytesFieldType,
 		iop.DateType:       bigquery.DateFieldType,
-		iop.DatetimeType:   bigquery.TimestampFieldType,
+		iop.DatetimeType:   bigquery.DateTimeFieldType,
 		iop.FloatType:      bigquery.FloatFieldType,
 		iop.SmallIntType:   bigquery.IntegerFieldType,
 		iop.IntegerType:    bigquery.IntegerFieldType,
@@ -800,6 +800,8 @@ func (conn *BigQueryConn) CopyFromGCS(gcsURI string, table Table, dsColumns []io
 	}
 
 	if err := status.Err(); err != nil {
+		//fmt.Println("Pausing: Press enter to continue...")
+		//bufio.NewReader(os.Stdin).ReadBytes('\n')
 		return g.Error(err, "Error in Import Task")
 	}
 
@@ -986,13 +988,13 @@ func (conn *BigQueryConn) CastColumnForSelect(srcCol iop.Column, tgtCol iop.Colu
 	case !srcCol.IsString() && tgtCol.IsString():
 		selectStr = g.F("cast(%s as string) as %s", qName, qName)
 	case srcCol.IsString() && tgtCol.IsDatetime():
-		selectStr = g.F("cast(%s as timestamp) as %s", qName, qName)
+		selectStr = g.F("cast(%s as datetime) as %s", qName, qName)
 	case srcCol.IsString() && tgtCol.IsDate():
 		selectStr = g.F("cast(%s as date) as %s", qName, qName)
 	case !strings.EqualFold(srcCol.DbType, "datetime") && strings.EqualFold(tgtCol.DbType, "datetime"):
 		selectStr = g.F("cast(%s as datetime) as %s", qName, qName)
 	case !strings.EqualFold(srcCol.DbType, "timestamp") && strings.EqualFold(tgtCol.DbType, "timestamp"):
-		selectStr = g.F("cast(%s as timestamp) as %s", qName, qName)
+		selectStr = g.F("cast(%s as datetime) as %s", qName, qName)
 	default:
 		selectStr = qName
 	}
@@ -1046,7 +1048,6 @@ func (conn *BigQueryConn) GetDatabases() (iop.Dataset, error) {
 // GetSchemas returns schemas
 func (conn *BigQueryConn) GetSchemas() (iop.Dataset, error) {
 	// fields: [schema_name]
-
 	// get list of datasets
 	it := conn.Client.Datasets(conn.Context().Ctx)
 	conn.Datasets = []string{}

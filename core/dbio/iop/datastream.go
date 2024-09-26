@@ -428,7 +428,7 @@ func (ds *Datastream) ChangeColumn(i int, newType ColumnType) {
 	case oldType == TextType && newType == StringType:
 		return
 	}
-
+        g.Debug("old type: %s new type: %s",oldType, newType)
 	g.Debug("column type change for %s (%s to %s)", ds.Columns[i].Name, oldType, newType)
 	setChangedType(&ds.Columns[i], newType)
 	ds.schemaChgChan <- schemaChg{ChangedIndex: i, ChangedType: newType}
