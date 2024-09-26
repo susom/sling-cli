@@ -534,4 +534,4 @@ trino	timestamp	timestamp
 trino	timestamp with time zone	timestampz				
 trino	double	float				
 trino	varchar	time				
-trino	varchar	timez				
+trino	varchar	timez
